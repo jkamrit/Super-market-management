@@ -15,12 +15,15 @@ import java.sql.SQLException;
  * @author RAMYAMUKESH
  */
 public class connect {
-    private static String url="jdbc:mysql://localhost:3306/controls?verifyServerCertificate=false&useSSL=true";
-    private static String una="root";
-    private static String pas="Thunder@123";
+   
+    private static String url;
+    private static String una;
+    private static String pas;
      public static Connection con=null;
     public connect() throws SQLException{
-          
+          url="jdbc:mysql://localhost:3306/controls?verifyServerCertificate=false&useSSL=true";
+          una="root";
+          pas="Thunder@123";
           con  = DriverManager.getConnection(url,una,pas);
             
             }

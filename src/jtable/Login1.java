@@ -110,18 +110,28 @@ public class Login1 extends javax.swing.JFrame {
         String ps= String.valueOf(jPasswordField1.getPassword());
         String g= "SELECT * FROM `control` WHERE `Username` = ? AND `Password` = ? ";
              PreparedStatement st;
+             
             
         try {
              connect i= new connect();
-             Connection p=connect.con;
-            st = p.prepareStatement(g);
+            st = i.con.prepareStatement(g);
             st.setString(1, un);
              st.setString(2, ps);
              rs=st.executeQuery();
              if(rs.next())
              {
                  //ok accepted
-                 JOptionPane.showMessageDialog(null, "Invalid username/password", "Login success", 2);
+                 
+                 if("Admin".equals(rs.getString("Role")))
+                 {
+                     System.out.println(rs.getString("Role"));
+                   java.awt.EventQueue.invokeLater(() -> {
+            new AdminFrame().setVisible(true);
+           
+                    });
+                 }
+                 
+                this.setVisible(false);
              }
              else
              {
@@ -132,7 +142,7 @@ public class Login1 extends javax.swing.JFrame {
             Logger.getLogger(Login1.class.getName()).log(Level.SEVERE, null, ex);
         }
              
-        System.out.println(un+ps);
+        
         
         
     
@@ -173,7 +183,8 @@ public class Login1 extends javax.swing.JFrame {
        
         
         java.awt.EventQueue.invokeLater(() -> {
-            new Login1().setVisible(true);
+            new AdminFrame().setVisible(true);
+           
         });
     }
 
