@@ -183,7 +183,7 @@ public class Login1 extends javax.swing.JFrame {
        
         
         java.awt.EventQueue.invokeLater(() -> {
-            new AdminFrame().setVisible(true);
+            new Login1().setVisible(true);
            
         });
     }
