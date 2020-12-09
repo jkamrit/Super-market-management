@@ -34,6 +34,7 @@ public class AdminFrame extends javax.swing.JFrame {
         jRadioButton2.setActionCommand("InventoryControl");
         jRadioButton3.setActionCommand("Admin");
          jRadioButton3.setSelected(true);
+         jButton4.setEnabled(false);
    
 
 
@@ -85,6 +86,13 @@ public class AdminFrame extends javax.swing.JFrame {
         }
       
     
+    }
+    public void refresh()
+    {
+        mo.setRowCount(0);
+        mo= (DefaultTableModel)jTable1.getModel();
+        showctrl();
+       
     }
   
     /**
@@ -138,6 +146,7 @@ public class AdminFrame extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         jDialog1.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog1.setBounds(new java.awt.Rectangle(100, 100, 300, 300));
@@ -390,7 +399,7 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "UserName", "Password", "Age","Role" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "UserName", "Password","Role" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -403,6 +412,18 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jButton3.setText("Modify");
         jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -442,6 +463,8 @@ public class AdminFrame extends javax.swing.JFrame {
                                 .addGap(14, 14, 14))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton3)))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
@@ -459,7 +482,9 @@ public class AdminFrame extends javax.swing.JFrame {
                     .addComponent(jLabel22)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
                 .addGap(17, 17, 17)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -586,9 +611,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        mo.setRowCount(0);
-        mo= (DefaultTableModel)jTable1.getModel();
-        showctrl();
+        refresh();
        
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -611,25 +634,77 @@ public class AdminFrame extends javax.swing.JFrame {
         ResultSet rs;
         try {
              p= (PreparedStatement) connect.con.prepareStatement(a);
+             if(!(jTextField3.getText().matches("[0-9]+") && jTextField3.getText().length() > 2))return;
              p.setInt(1,Integer.valueOf(jTextField3.getText()));
              rs=p.executeQuery();
              if(rs.next())
              {
                  
+                 
                  jTextField4.setEditable(true);
                  jButton3.setEnabled(true);
+                 jButton4.setEnabled(true);
              }
              else
              {
                
                  jTextField4.setEditable(false);
                  jButton3.setEnabled(false);
+                 jButton4.setEnabled(false);
              }
         } catch (SQLException ex) {
             Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jTextField3FocusLost
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String a=jTextField3.getText(),b,c,s;//id
+        if(!(a.matches("[0-9]+") && a.length() > 2))return;
+        b=jTextField4.getText(); //value
+        c=(String) jComboBox1.getSelectedItem();
+        if((b.matches("[0-9]+") && b.length() > 2)||b.equals("") )
+        {JOptionPane.showMessageDialog(this, 
+               "Enter Valid value", "Error",JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+        if(c.equals("Role")&&(!((b.equals("Admin")||b.equals("InventoryControl")||b.equals("Cashier"))) )){
+        JOptionPane.showMessageDialog(this, 
+               "Enter Valid value (Admin,Cashier,InventoryControl) Only", "Error",JOptionPane.ERROR_MESSAGE);
+        return;
+        } 
+        s="Update control SET "+c+"= \'"+b+"\' WHERE UserId ="+a;
+        try {
+            PreparedStatement ps=(PreparedStatement) connect.con.prepareStatement(s);
+            ps.executeUpdate();
+             mo.setRowCount(0);
+        mo= (DefaultTableModel)jTable1.getModel();
+        showctrl();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        String a=jTextField3.getText(),b;//id
+        b="Delete from control where UserId ="+a;       
+        try {          
+            PreparedStatement ps=(PreparedStatement) connect.con.prepareStatement(b);
+            int i = JOptionPane.showConfirmDialog(this, "Do you want to delete the entire data?", "Delete",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+            if(i==1||i==2)return;
+            ps.executeUpdate();
+            refresh();
+            jTextField3.setText("");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -657,7 +732,7 @@ public class AdminFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(AdminFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+            
         /* Create and display the form */
       
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -677,6 +752,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;

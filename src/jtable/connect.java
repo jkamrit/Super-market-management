@@ -20,6 +20,7 @@ public class connect {
     private static String url;
     private static String una;
     private static String pas;
+    
      public static Connection con=null;
     public connect() throws SQLException{
           url="jdbc:mysql://localhost:3306/controls?verifyServerCertificate=false&useSSL=true";
