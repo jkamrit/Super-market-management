@@ -47,7 +47,7 @@ public class Login1 extends javax.swing.JFrame {
 
         jLabel3.setText("Password");
 
-        jTextField1.setText("UserName");
+        jTextField1.setText("Hello");
 
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -56,7 +56,7 @@ public class Login1 extends javax.swing.JFrame {
             }
         });
 
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.setText("Power");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,7 +126,11 @@ public class Login1 extends javax.swing.JFrame {
                  {
                      System.out.println(rs.getString("Role"));
                    java.awt.EventQueue.invokeLater(() -> {
-            new AdminFrame().setVisible(true);
+                         try {
+                             new AdminFrame().setVisible(true);
+                         } catch (SQLException ex) {
+                             Logger.getLogger(Login1.class.getName()).log(Level.SEVERE, null, ex);
+                         }
            
                     });
                  }
@@ -182,9 +186,11 @@ public class Login1 extends javax.swing.JFrame {
        Class.forName ("com.mysql.jdbc.Driver");
        
         
-        java.awt.EventQueue.invokeLater(() -> {
-            new Login1().setVisible(true);
-           
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Login1().setVisible(true);
+            }
         });
     }
 
