@@ -25,6 +25,10 @@ public class InventoryControl extends javax.swing.JFrame {
     /** Creates new form InventoryControl */
     public InventoryControl() throws SQLException {
         initComponents();
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton1.setActionCommand("create");
+        jRadioButton2.setActionCommand("update");
         
     }
 
@@ -55,12 +59,13 @@ public class InventoryControl extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField4 = new javax.swing.JTextField();
@@ -70,21 +75,21 @@ public class InventoryControl extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
 
-        jFrame1.setSize(new java.awt.Dimension(763, 358));
+        jFrame1.setSize(new java.awt.Dimension(814, 440));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "BarCode ID", "Unique ID", "Name", "Price", "Quantity"
+                "BarCode ID", "Unique ID", "Name", "MarketPrice", "Price", "Quantity"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.Long.class, java.lang.String.class, java.lang.Float.class, java.lang.Long.class
+                java.lang.Long.class, java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -95,7 +100,7 @@ public class InventoryControl extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setCellSelectionEnabled(true);
+        jTable2.setColumnSelectionAllowed(false);
         jScrollPane2.setViewportView(jTable2);
 
         jRadioButton1.setText("Create new product");
@@ -115,7 +120,7 @@ public class InventoryControl extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Price");
+        jLabel3.setText("MarketPrice");
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,8 +133,26 @@ public class InventoryControl extends javax.swing.JFrame {
         jLabel5.setText("Quantity");
 
         jButton3.setText("Add");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Set");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Price");
+
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -145,27 +168,32 @@ public class InventoryControl extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jFrame1Layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
+                        .addGap(61, 61, 61)
                         .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
+                        .addGap(24, 24, 24)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jFrame1Layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(91, 91, 91)
+                        .addComponent(jLabel6)
+                        .addGap(27, 27, 27)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jFrame1Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
+                        .addGap(71, 71, 71)
+                        .addComponent(jLabel4)
+                        .addGap(28, 28, 28)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
                         .addComponent(jButton3))
                     .addComponent(jRadioButton2)
                     .addGroup(jFrame1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
                         .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
+                        .addGap(49, 49, 49)
                         .addComponent(jButton4)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane2))
         );
         jFrame1Layout.setVerticalGroup(
             jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,31 +206,27 @@ public class InventoryControl extends javax.swing.JFrame {
                         .addGap(3, 3, 3)
                         .addComponent(jLabel2))
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addGap(11, 11, 11)
                 .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
+                .addGap(10, 10, 10)
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
                 .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addGroup(jFrame1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
-                .addComponent(jButton3)
-                .addGap(25, 25, 25)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(52, 52, 52)
                 .addComponent(jRadioButton2)
-                .addGap(19, 19, 19)
+                .addGap(22, 22, 22)
                 .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jFrame1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel5))
-                    .addGroup(jFrame1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton4))
-                .addGap(83, 83, 83))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel5)
+                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4)))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -212,15 +236,22 @@ public class InventoryControl extends javax.swing.JFrame {
 
             },
             new String [] {
-                "BarCode ID", "Unique ID", "Name", "Price", "Quantity"
+                "BarCode ID", "Unique ID", "Name", "MarketPrice", "Price", "Quantity"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.Long.class, java.lang.String.class, java.lang.Float.class, java.lang.Long.class
+                java.lang.Long.class, java.lang.Long.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class, java.lang.Long.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jTable1.setColumnSelectionAllowed(true);
@@ -237,20 +268,18 @@ public class InventoryControl extends javax.swing.JFrame {
 
         jLabel1.setText("BarCode ID");
 
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jLabel7.setText("Update the selected");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Quantity", "Price"}));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Quantity", "Price","MarketPrice"}));
 
         jTextField4.setText("jTextField4");
 
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Add");
 
@@ -269,64 +298,62 @@ public class InventoryControl extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(28, 28, 28)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel1))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                                    .addComponent(jTextField5))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(103, 103, 103)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(jButton2)))
+                .addGap(104, 104, 104)
+                .addComponent(jScrollPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 19, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(26, 26, 26)
                 .addComponent(jLabel9)
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel10))
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(55, 55, 55)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1))
-                .addGap(63, 63, 63)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(65, 65, 65)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addComponent(jButton2))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
         );
 
         pack();
@@ -349,7 +376,7 @@ public class InventoryControl extends javax.swing.JFrame {
         ps.setString(1, jTextField5.getText()+'%');
          rs=ps.executeQuery();
         }
-      Object[] r=new Object[5];
+      Object[] r=new Object[6];
          while(rs.next())
          {
              //String Us,String pa,String ro,String date,int a,int id
@@ -357,8 +384,9 @@ public class InventoryControl extends javax.swing.JFrame {
                      r[0]=rs.getLong("BarCodeId");
                      r[1]=rs.getInt("UniqueId");
              r[2]=rs.getString("Name");
-             r[3]=rs.getFloat("Price");
-             r[4]=rs.getLong("Quantity");
+             r[3]=rs.getFloat("MarketPrice");
+             r[4]=rs.getFloat("Price");
+             r[5]=rs.getLong("Quantity");
              
              mo.addRow(r);
            
@@ -399,20 +427,25 @@ public class InventoryControl extends javax.swing.JFrame {
             jRadioButton2.setSelected(true);
             mo.setRowCount(0);
         mo= (DefaultTableModel)jTable2.getModel();
-      Object[] r=new Object[5];
+      Object[] r=new Object[6];
       
          do
          {
              //String Us,String pa,String ro,String date,int a,int id
               // "UserId", "UserName", "Password", "Age", "Role", "DateJoining"
-                     r[0]=rs.getLong("BarCodeId");
+                    r[0]=rs.getLong("BarCodeId");
                      r[1]=rs.getInt("UniqueId");
              r[2]=rs.getString("Name");
-             r[3]=rs.getFloat("Price");
-             r[4]=rs.getLong("Quantity");
+             r[3]=rs.getFloat("MarketPrice");
+             r[4]=rs.getFloat("Price");
+             r[5]=rs.getInt("Quantity");
              mo.addRow(r);
          }while(rs.next());
-
+            jRadioButton2.setSelected(true);
+             jRadioButton2.setEnabled(true);
+             jSpinner2.setEnabled(true);
+             jButton4.setEnabled(true);
+             jLabel5.setEnabled(true);
          }
          else
          {
@@ -420,6 +453,7 @@ public class InventoryControl extends javax.swing.JFrame {
              jRadioButton2.setEnabled(false);
              jSpinner2.setEnabled(false);
              jButton4.setEnabled(false);
+             jLabel5.setEnabled(false);
          }
          jFrame1.setVisible(true);
         } catch (SQLException ex) {
@@ -441,62 +475,156 @@ public class InventoryControl extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-           if(!(jTextField1.getText().matches("[0-9]+") )&& jTextField1.getText().length() >0)
-        {
-             JOptionPane.showMessageDialog(this, "Enter valid BarCode ID","Failed"
-               , JOptionPane.ERROR_MESSAGE);
-             return;
-        }
-        
-         PreparedStatement ps;
-        ResultSet rs;
-        String s="SELECT * FROM IC WHERE BarCodeId=?";
-        try {
-            ps=(PreparedStatement) connect.con.prepareStatement(s);
-            ps.setLong(1,Long.valueOf(jTextField1.getText()));
-         rs=ps.executeQuery();
-         if(rs.next())
-         {
-            jRadioButton2.setSelected(true);
-            mo.setRowCount(0);
-        mo= (DefaultTableModel)jTable2.getModel();
-      Object[] r=new Object[5];
-      
-         do
-         {
-             //String Us,String pa,String ro,String date,int a,int id
-              // "UserId", "UserName", "Password", "Age", "Role", "DateJoining"
-                     r[0]=rs.getLong("BarCodeId");
-                     r[1]=rs.getInt("UniqueId");
-             r[2]=rs.getString("Name");
-             r[3]=rs.getFloat("Price");
-             r[4]=rs.getLong("Quantity");
-             mo.addRow(r);
-         }while(rs.next());
-
-         }
-         else
-         {
-             jRadioButton1.setSelected(true);
-             jRadioButton2.setEnabled(false);
-             jSpinner2.setEnabled(false);
-             jButton4.setEnabled(false);
-         }
-         jFrame1.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(InventoryControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
         refresh();
     }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String s=buttonGroup1.getSelection().getActionCommand();
+        if(s.equals("create"))
+        {
+            String n;
+            int q=(int) jSpinner1.getValue();
+            float mp,sp;
+            n=jTextField2.getText();
+            try
+            {mp=Float.valueOf(jTextField3.getText());}
+                catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(jFrame1, "Enter valid MarketPrice","Failed ", JOptionPane.ERROR_MESSAGE);
+             return;
+                }
+            try
+            {sp=Float.valueOf(jTextField6.getText());}
+                catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(jFrame1, "Enter valid Price","Failed ", JOptionPane.ERROR_MESSAGE);
+             return;
+                }
+            if(sp<mp)
+                {
+                    JOptionPane.showMessageDialog(jFrame1, "MarketPrice must be less than or equal to price","Failed ", JOptionPane.ERROR_MESSAGE);
+             return;
+                }
+            PreparedStatement ps;
+            s="INSERT INTO IC (Name,Price,Quantity,MarketPrice,BarCodeId) values (?,?,?,?,?)";
+            try {
+                ps=(PreparedStatement) connect.con.prepareStatement(s);
+                ps.setString(1, n);
+                ps.setFloat(2, sp);
+                ps.setFloat(4, mp);
+                ps.setInt(3, q);
+                 ps.setLong(5,Long.valueOf(jTextField1.getText()));
+                int e = ps.executeUpdate();
+                if(e==1) JOptionPane.showMessageDialog(jFrame1, "Product added successfully","Success ", JOptionPane.INFORMATION_MESSAGE);
+                jFrame1.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(InventoryControl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+                  
+        }else
+            {
+                 JOptionPane.showMessageDialog(this, "Select the create button","Failed ", JOptionPane.ERROR_MESSAGE);
+            }
+                  
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String s=buttonGroup1.getSelection().getActionCommand();
+        if(s.equals("update"))
+        {
+           
+            int q= (int) jSpinner2.getValue();
+            int r=jTable2.getSelectedRow(),o;
+            if(r==-1){
+                JOptionPane.showMessageDialog(jFrame1, "Select any product from the table to update","Failed ", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            o=(int) jTable2.getValueAt(r, 1);
+            q+=(int) jTable2.getValueAt(r, 5);
+            PreparedStatement ps;
+            s="UPDATE IC SET Quantity=? where UniqueId=?";
+            try {
+                ps=(PreparedStatement) connect.con.prepareStatement(s);
+                ps.setInt(1, q);
+                 ps.setInt(2,o);
+                int e = ps.executeUpdate();
+                jTable2.setValueAt(q, r, 5);
+                if(e==1) JOptionPane.showMessageDialog(jFrame1, "Quantity updated to "+String.valueOf(q)+" Successfully!","Success ", JOptionPane.INFORMATION_MESSAGE);
+                jFrame1.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(InventoryControl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+                  
+        }else
+            {
+                 JOptionPane.showMessageDialog(this, "Select the create button","Failed ", JOptionPane.ERROR_MESSAGE);
+            }
+                  
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int i= jTable1.getSelectedRow(),k=0,t1=-1;
+        float t=0;
+        if(i==-1){JOptionPane.showMessageDialog(this, "Select the a product from the table","Failed ", JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+        if(((String)jComboBox1.getSelectedItem()).equals("Price"))
+        {
+            try
+            {t=Float.valueOf(jTextField4.getText());}
+            catch(NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Enter valid price in th box","Failed ", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if(((String)jComboBox1.getSelectedItem()).equals("MarketPrice"))
+        {
+            try
+            {t=Float.valueOf(jTextField4.getText());}
+            catch(NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Enter valid MarketPrice in th box","Failed ", JOptionPane.ERROR_MESSAGE);
+            }}
+            if(((String)jComboBox1.getSelectedItem()).equals("Quantity"))
+        {
+            try
+            {t1=Integer.valueOf(jTextField4.getText());}
+            catch(NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Enter valid Quantity in the box","Failed ", JOptionPane.ERROR_MESSAGE);
+            }}
+           if(t1==-1) JOptionPane.showConfirmDialog(this, "Are to sure in changing value from "+jTextField4.getText()+" to "+String.valueOf(t),"Warning ",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+           else
+            JOptionPane.showConfirmDialog(this, "Are to sure in changing value from "+jTextField4.getText()+" to "+String.valueOf(t1),"Warning ",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        PreparedStatement ps;
+        String lp="Update IC set "+(String)jComboBox1.getSelectedItem()+"= ? where UniqueId = ?";
+        try {
+            ps=(PreparedStatement) connect.con.prepareStatement(lp);
+            ps.setInt(2, (int) jTable1.getValueAt(t1, 1));
+            if(t1==-1)ps.setFloat(1, t);
+            else ps.setInt(1, t1);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(InventoryControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+         
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -540,7 +668,6 @@ public class InventoryControl extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -552,6 +679,7 @@ public class InventoryControl extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -568,6 +696,7 @@ public class InventoryControl extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
    private connect poi =new connect();
    private DefaultTableModel mo=new DefaultTableModel();
