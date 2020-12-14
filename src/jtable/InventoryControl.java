@@ -29,6 +29,7 @@ public class InventoryControl extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton2);
         jRadioButton1.setActionCommand("create");
         jRadioButton2.setActionCommand("update");
+        refresh(0);
         
     }
 
@@ -74,6 +75,7 @@ public class InventoryControl extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         jFrame1.setSize(new java.awt.Dimension(814, 440));
 
@@ -100,7 +102,6 @@ public class InventoryControl extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setColumnSelectionAllowed(false);
         jScrollPane2.setViewportView(jTable2);
 
         jRadioButton1.setText("Create new product");
@@ -243,7 +244,7 @@ public class InventoryControl extends javax.swing.JFrame {
                 java.lang.Long.class, java.lang.Long.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class, java.lang.Long.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, true, true
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -254,12 +255,10 @@ public class InventoryControl extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -271,8 +270,6 @@ public class InventoryControl extends javax.swing.JFrame {
         jLabel7.setText("Update the selected");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Quantity", "Price","MarketPrice"}));
-
-        jTextField4.setText("jTextField4");
 
         jButton2.setText("Update");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -287,10 +284,16 @@ public class InventoryControl extends javax.swing.JFrame {
 
         jLabel10.setText("Name");
 
-        jTextField5.setText("jTextField5");
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Delete the selected row product");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -316,19 +319,21 @@ public class InventoryControl extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jButton2)))
-                .addGap(104, 104, 104)
-                .addComponent(jScrollPane1))
+                        .addGap(95, 95, 95)
+                        .addComponent(jButton1)))
+                .addGap(70, 70, 70)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
@@ -336,13 +341,12 @@ public class InventoryControl extends javax.swing.JFrame {
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(55, 55, 55)
                 .addComponent(jLabel8)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                        .addGap(3, 3, 3)
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(65, 65, 65)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -350,22 +354,25 @@ public class InventoryControl extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20)
-                .addComponent(jButton2))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jButton2)))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void showctrl() 
+    public void showctrl(int c) 
     {
         try {
  
              PreparedStatement ps;
         ResultSet rs;
-        if(jTextField5.getText()==""){
+        if(jTextField5.getText()==""||c==0){
         String s="SELECT * FROM IC";
         ps=(PreparedStatement) poi.con.prepareStatement(s);
          rs=ps.executeQuery();
@@ -399,11 +406,11 @@ public class InventoryControl extends javax.swing.JFrame {
         }
         
     }
-    public void refresh()
+    public void refresh(int c)
     {
         mo.setRowCount(0);
         mo= (DefaultTableModel)jTable1.getModel();
-        showctrl();
+        showctrl(c);
        
     }
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -477,7 +484,7 @@ public class InventoryControl extends javax.swing.JFrame {
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
-        refresh();
+        refresh(1);
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -575,7 +582,8 @@ public class InventoryControl extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int i= jTable1.getSelectedRow(),k=0,t1=-1;
-        float t=0;
+        String a="";
+        float t=-1;
         if(i==-1){JOptionPane.showMessageDialog(this, "Select the a product from the table","Failed ", JOptionPane.ERROR_MESSAGE);
         return;
         }
@@ -586,6 +594,15 @@ public class InventoryControl extends javax.swing.JFrame {
             catch(NumberFormatException e)
             {
                 JOptionPane.showMessageDialog(this, "Enter valid price in th box","Failed ", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if(((String)jComboBox1.getSelectedItem()).equals("Name"))
+        {
+            try
+            {a=jTextField4.getText();}
+            catch(NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Enter valid name in th box","Failed ", JOptionPane.ERROR_MESSAGE);
             }
         }
         if(((String)jComboBox1.getSelectedItem()).equals("MarketPrice"))
@@ -604,19 +621,27 @@ public class InventoryControl extends javax.swing.JFrame {
             {
                 JOptionPane.showMessageDialog(this, "Enter valid Quantity in the box","Failed ", JOptionPane.ERROR_MESSAGE);
             }}
-           if(t1==-1) JOptionPane.showConfirmDialog(this, "Are to sure in changing value from "+jTextField4.getText()+" to "+String.valueOf(t),"Warning ",
+            i=-1;
+           if(t!=-1) i=JOptionPane.showConfirmDialog(this, "Are to sure in changing value ","Warning ",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+           else if(t1!=-1)
+            i=JOptionPane.showConfirmDialog(this, "Are to sure in changing value ","Warning ",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
            else
-            JOptionPane.showConfirmDialog(this, "Are to sure in changing value from "+jTextField4.getText()+" to "+String.valueOf(t1),"Warning ",
+             i=  JOptionPane.showConfirmDialog(this, "Are to sure in changing value ","Warning ",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+           if(i!=0)return;
+           i= jTable1.getSelectedRow();
         PreparedStatement ps;
         String lp="Update IC set "+(String)jComboBox1.getSelectedItem()+"= ? where UniqueId = ?";
         try {
             ps=(PreparedStatement) connect.con.prepareStatement(lp);
-            ps.setInt(2, (int) jTable1.getValueAt(t1, 1));
-            if(t1==-1)ps.setFloat(1, t);
-            else ps.setInt(1, t1);
+            ps.setInt(2, (int) jTable1.getValueAt(i, 1));
+            if(t!=-1)ps.setFloat(1, t);
+            else if(t1!=-1)ps.setInt(1, t1);
+            else ps.setString(1,a);
             ps.executeUpdate();
+             refresh(0);
         } catch (SQLException ex) {
             Logger.getLogger(InventoryControl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -625,6 +650,34 @@ public class InventoryControl extends javax.swing.JFrame {
         
          
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        int i= jTable1.getSelectedRow();
+     
+  
+        if(i==-1){JOptionPane.showMessageDialog(this, "Select the a product from the table","Failed ", JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+        i=  JOptionPane.showConfirmDialog(this, "Are to sure in Deleting the selected row ","Warning ",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(i==0){
+            i= jTable1.getSelectedRow();
+        PreparedStatement ps;
+        String lp="delete from IC where UniqueId=?";
+        try {
+            ps=(PreparedStatement) connect.con.prepareStatement(lp);
+            ps.setInt(1, (int) jTable1.getValueAt(i, 1));
+            ps.executeUpdate();
+             refresh(0);
+        } catch (SQLException ex) {
+            Logger.getLogger(InventoryControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -668,6 +721,7 @@ public class InventoryControl extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
