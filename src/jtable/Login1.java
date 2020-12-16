@@ -189,11 +189,7 @@ public class Login1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                try {
-                    new InventoryControl().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login1.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new Cashier().setVisible(true);
             }
         });
     }

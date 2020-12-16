@@ -593,7 +593,7 @@ public class InventoryControl extends javax.swing.JFrame {
             {t=Float.valueOf(jTextField4.getText());}
             catch(NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "Enter valid price in th box","Failed ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Enter valid price in th box","Failed ", JOptionPane.ERROR_MESSAGE);return;
             }
         }
         if(((String)jComboBox1.getSelectedItem()).equals("Name"))
@@ -602,7 +602,7 @@ public class InventoryControl extends javax.swing.JFrame {
             {a=jTextField4.getText();}
             catch(NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "Enter valid name in th box","Failed ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Enter valid name in th box","Failed ", JOptionPane.ERROR_MESSAGE);return;
             }
         }
         if(((String)jComboBox1.getSelectedItem()).equals("MarketPrice"))
@@ -611,7 +611,7 @@ public class InventoryControl extends javax.swing.JFrame {
             {t=Float.valueOf(jTextField4.getText());}
             catch(NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "Enter valid MarketPrice in th box","Failed ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Enter valid MarketPrice in th box","Failed ", JOptionPane.ERROR_MESSAGE);return ;
             }}
             if(((String)jComboBox1.getSelectedItem()).equals("Quantity"))
         {
@@ -619,7 +619,7 @@ public class InventoryControl extends javax.swing.JFrame {
             {t1=Integer.valueOf(jTextField4.getText());}
             catch(NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "Enter valid Quantity in the box","Failed ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Enter valid Quantity in the box","Failed ", JOptionPane.ERROR_MESSAGE);return;
             }}
             i=-1;
            if(t!=-1) i=JOptionPane.showConfirmDialog(this, "Are to sure in changing value ","Warning ",
