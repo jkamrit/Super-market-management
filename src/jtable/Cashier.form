@@ -33,8 +33,8 @@
                   <Table columnCount="4" rowCount="0">
                     <Column editable="false" title="BarcodeId" type="java.lang.Object"/>
                     <Column editable="false" title="uniqueId" type="java.lang.Object"/>
-                    <Column editable="true" title="Name" type="java.lang.Object"/>
-                    <Column editable="true" title="price" type="java.lang.Object"/>
+                    <Column editable="false" title="Name" type="java.lang.Object"/>
+                    <Column editable="false" title="price" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

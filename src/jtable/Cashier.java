@@ -11,6 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,6 +29,66 @@ public class Cashier extends javax.swing.JFrame {
      */
     public Cashier() {
         initComponents();
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton1.setActionCommand("Cash");
+        jRadioButton2.setActionCommand("card");
+        jRadioButton3.setActionCommand("Upi");
+        ListSelectionModel cellSelectionModel = jTable1.getSelectionModel();
+    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent e) {
+        String selectedData = null;
+
+        int selectedRow = jTable1.getSelectedRow();
+        int selectedColumn = jTable1.getSelectedColumn();
+
+       
+        System.out.println(String.valueOf( jTable1.getValueAt(selectedRow, selectedColumn) ));
+      }
+
+    });
+    jTable1.getModel().addTableModelListener(new TableModelListener() {
+
+      public void tableChanged(TableModelEvent e) {
+        
+       
+        if(e.getColumn()==4)return;
+        int p=0,r=e.getFirstRow(),c=e.getColumn(),i=0,n=0;
+        float f=0;
+         if(e.getColumn()==-1)    
+        {n=jTable1.getRowCount();
+         for(i=0;i<n;i++)
+            {
+                f+=(float)jTable1.getValueAt(i, 4);
+            }
+         jLabel4.setText(String.valueOf(f));
+         return;
+        }
+       // System.out.println(String.valueOf(r)+String.valueOf(c));
+        try{ 
+            p= Integer.valueOf((String) jTable1.getValueAt(r, c));
+        }
+        catch(NumberFormatException k)
+            {
+                jTable1.setValueAt(1, r, c);
+                 JOptionPane.showMessageDialog(jFrame1, "Enter valid quantity","Failed ", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
+        jTable1.setValueAt(Float.valueOf((String)jTable1.getValueAt(e.getFirstRow(), 2))*p, r, 4);
+         n=jTable1.getRowCount();
+         for(i=0;i<n;i++)
+            {
+                f+=(float)jTable1.getValueAt(i, 4);
+            }
+         jLabel4.setText(String.valueOf(f));
+      }
+
+           
+    });
+       
     }
 
     /**
@@ -65,7 +130,7 @@ public class Cashier extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -205,7 +270,8 @@ public class Cashier extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+  
+    
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
        int mp=0,c=0;
@@ -227,8 +293,12 @@ public class Cashier extends javax.swing.JFrame {
              Object[] r=new Object[4],r1=new Object[5];
             mo.setRowCount(0); 
         mo= (DefaultTableModel)jTable2.getModel();
-        
-         while(rs.next())
+        if(!rs.next())
+        {
+            JOptionPane.showMessageDialog(this, "Enter valid BarCode","Failed ", JOptionPane.ERROR_MESSAGE);
+             return;
+        }
+         do
          {
              //String Us,String pa,String ro,String date,int a,int id
               // "UserId", "UserName", "Password", "Age", "Role", "DateJoining"
@@ -244,7 +314,9 @@ public class Cashier extends javax.swing.JFrame {
              r[1]=rs.getString("UniqueId");
               mo.addRow(r);
              c++;
-         }
+         }while(rs.next());
+         
+        
            if(c==1)
            {
                 mo1= (DefaultTableModel)jTable1.getModel();
@@ -259,9 +331,7 @@ public class Cashier extends javax.swing.JFrame {
             
         } catch (SQLException ex) {
             Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
-         
+        } 
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -292,7 +362,9 @@ public class Cashier extends javax.swing.JFrame {
                 }
         
     }//GEN-LAST:event_jButton2ActionPerformed
-
+      
+    
+   
     /**
      * @param args the command line arguments
      */
@@ -321,10 +393,8 @@ public class Cashier extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Cashier().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Cashier().setVisible(true);
         });
     }
 private DefaultTableModel mo=new DefaultTableModel();
