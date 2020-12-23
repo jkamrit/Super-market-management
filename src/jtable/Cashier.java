@@ -4,13 +4,17 @@
  * and open the template in the editor.
  */
 package jtable;
-
+import java.util.Date; 
 import com.mysql.jdbc.PreparedStatement;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import javax.swing.ButtonModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -30,6 +34,7 @@ public class Cashier extends javax.swing.JFrame {
      */
     public Cashier() {
         initComponents();
+        address="C:\\Users\\RAMYAMUKESH\\Documents\\project\\filss\\";
         buttonGroup1.add(jRadioButton1);
         buttonGroup1.add(jRadioButton1);
         buttonGroup1.add(jRadioButton3);
@@ -46,9 +51,9 @@ public class Cashier extends javax.swing.JFrame {
 
         int selectedRow = jTable1.getSelectedRow();
         int selectedColumn = jTable1.getSelectedColumn();
-
+        
        
-        System.out.println(String.valueOf( jTable1.getValueAt(selectedRow, selectedColumn) ));
+//        System.out.println(String.valueOf( jTable1.getValueAt(selectedRow, selectedColumn) ));
       }
 
     });
@@ -157,10 +162,17 @@ public class Cashier extends javax.swing.JFrame {
         });
         jFrame1.getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 120, -1, -1));
 
+        jFrame2.setMinimumSize(new java.awt.Dimension(509, 299));
+        jFrame2.setPreferredSize(new java.awt.Dimension(509, 299));
+        jFrame2.setSize(new java.awt.Dimension(509, 299));
         jFrame2.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField4.setText("jTextField4");
-        jFrame2.getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 126, 138, -1));
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
+        jFrame2.getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 126, 138, 20));
 
         jLabel6.setText("Name");
         jFrame2.getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 129, -1, -1));
@@ -229,6 +241,11 @@ public class Cashier extends javax.swing.JFrame {
 
         jLabel5.setText("Phone number");
 
+        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField3FocusLost(evt);
+            }
+        });
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -407,21 +424,68 @@ public class Cashier extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+             long mp=0,c=0;
+         try
+            {mp=Long.valueOf(jTextField3.getText());}
+                catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(this, "Enter valid number","Failed ", JOptionPane.ERROR_MESSAGE);
+                    jTextField3.setText("");
+             return;
+                }
+         if(jTextField3.getText().length()!=10)
+         {
+             JOptionPane.showMessageDialog(this, "Number length is not 10","Failed ", JOptionPane.ERROR_MESSAGE); return;
+         }
         int i=-1;
             i=JOptionPane.showConfirmDialog(this, buttonGroup1.getSelection().getActionCommand()+ " is Selected. Are to sure to proceed ?","Warning ",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if(i!=0)return;
         PreparedStatement ps;
         ResultSet rs;
-        String t="Select from people where phonenumber="+jTextField3.getText();
+        String t="Select * from people where phonenumber="+jTextField3.getText();
         try {
-            ps=(PreparedStatement) connect.con.prepareStatement(t);
+            connect re=new connect();
+            ps=(PreparedStatement) re.con.prepareStatement(t);
             rs=ps.executeQuery();
             if(!rs.next())
             {
+                jFrame2.setVisible(true);
+                return;
+            }
+            else
+            {
+                int u=rs.getInt("count"),j;
+                t="Update people SET count= "+String.valueOf(++u)+" where ID = "+rs.getString("ID");
+                 System.out.println(t);
+                ps=(PreparedStatement) re.con.prepareStatement(t);
+                ps.executeUpdate();
+                Date d;
+                d = new Date();
+             SimpleDateFormat ft = 
+                            new SimpleDateFormat ("yyyy_MM_dd_hh_mm_ssa");
+             System.out.println("Current Date: " + ft.format(d));
+            File df = new File(address+rs.getString("phonenumber")+"\\"+ft.format(d)+".txt");
+            df.createNewFile();
+            FileWriter f = new FileWriter(address+rs.getString("phonenumber")+"\\"+ft.format(d)+".txt");
+            f.write(String.format("%-10s %-10s %-10s %-10s %-10s","UniqueId","Name","price","quantity","Totalprice"));
+             f.write("\n\n");
+            for(i=0;i<jTable1.getRowCount();i++)
+            {
+                 t="UPDATE IC SET Quantity = Quantity-"+String.valueOf(jTable1.getValueAt(i, 3))+" WHERE UniqueId = "+ String.valueOf(jTable1.getValueAt(i, 0));
+               
+                ps.executeUpdate(t);
+                f.write(String.format("%-10s %-10s %-10s %-10s %-10s",String.valueOf(jTable1.getValueAt(i, 0)),String.valueOf(jTable1.getValueAt(i, 1)),String.valueOf(jTable1.getValueAt(i, 2)),String.valueOf(jTable1.getValueAt(i, 3)),String.valueOf(jTable1.getValueAt(i, 4))));
+                f.write("\n");
+            }
+              f.close();
+              DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                 JOptionPane.showMessageDialog(this, "Data stored successfully","Success ", JOptionPane.INFORMATION_MESSAGE);
                 
             }
         } catch (SQLException ex) {
+            Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.print("jdfhsfj");
@@ -442,6 +506,70 @@ public class Cashier extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(this, "Number length is not 10","Failed ", JOptionPane.ERROR_MESSAGE); 
          }
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+        String h=jTextField4.getText();
+        if(h=="")
+        {
+            JOptionPane.showMessageDialog(this, "Enter a name","Failed ", JOptionPane.ERROR_MESSAGE); 
+            return;
+        }
+        else
+        {
+           
+            
+            int j,i;
+               String t="Insert into people (phonenumber,Name,count) values (?,?,1)";
+                Date d;
+                d = new Date();
+             SimpleDateFormat ft = 
+                            new SimpleDateFormat ("yyyy_MM_dd_hh_mm_ssa");
+             System.out.println("Current Date: " + ft.format(d));
+              File file = new File(address+"\\"+jTextField3.getText());
+            boolean bool = file.mkdirs();
+            
+            try {
+                PreparedStatement ps;
+                ps=(PreparedStatement) connect.con.prepareStatement(t);
+                ps.setString(1, jTextField3.getText());
+                ps.setString(2, jTextField4.getText());
+                ps.executeUpdate();
+                File df = new File(address+jTextField3.getText()+"\\"+ft.format(d)+".txt");
+            df.createNewFile();
+            FileWriter f;
+                f = new FileWriter(address+jTextField3.getText()+"\\"+ft.format(d)+".txt");
+                 f.write(String.format("%-10s %-10s %-10s %-10s %-10s","UniqueId","Name","price","quantity","Totalprice"));
+             f.write("\n\n");
+            
+              
+            for(i=0;i<jTable1.getRowCount();i++)
+            {
+              t="UPDATE IC SET Quantity = Quantity-"+String.valueOf(jTable1.getValueAt(i, 3))+" WHERE UniqueId = "+ String.valueOf(jTable1.getValueAt(i, 0));
+               ps.executeUpdate(t);
+                f.write(String.format("%-10s %-10s %-10s %-10s %-10s",String.valueOf(jTable1.getValueAt(i, 0)),String.valueOf(jTable1.getValueAt(i, 1)),String.valueOf(jTable1.getValueAt(i, 2)),String.valueOf(jTable1.getValueAt(i, 3)),String.valueOf(jTable1.getValueAt(i, 4))));
+                f.write("\n");
+            }
+             f.close();
+                
+                jFrame2.setVisible(false);
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                      JOptionPane.showMessageDialog(this, "Data stored successfully","Success ", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+            
+        }
+    }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
+        // TODO add your handling code here:
+     
+    }//GEN-LAST:event_jTextField3FocusLost
       
     
    
