@@ -6,6 +6,7 @@
 package jtable;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -93,7 +94,23 @@ public class Login1 extends javax.swing.JFrame {
                  
                  if("Admin".equals(rs.getString("Role")))
                  {
-                     System.out.println(rs.getString("Role"));
+                    g= "insert into log (username,Role,login,logout) values (?,?,?,\"WorkingOn\")";
+                    
+            st = i.con.prepareStatement(g);
+            st.setString(1, un);
+             st.setString(2, rs.getString("Role"));
+              java.util.Date d;
+                d = new java.util.Date();
+             SimpleDateFormat ft =  new SimpleDateFormat ("yyyy/MM/dd hh:mm:ss-a");
+             String h=ft.format(d);
+             st.setString(3,h);
+             st.executeUpdate();
+                 g="SELECT * from log where login=?";
+                 st = i.con.prepareStatement(g);
+                 st.setString(1,h);
+                 rs=st.executeQuery();
+                 rs.next();
+                 AdminFrame.ID=rs.getInt("ID");
                    java.awt.EventQueue.invokeLater(() -> {
                          try {
                              new AdminFrame().setVisible(true);
@@ -106,16 +123,47 @@ public class Login1 extends javax.swing.JFrame {
                  }
                  else if("Cashier".equals(rs.getString("Role")))
                  {
-                     System.out.println(rs.getString("Role"));
+                             g= "insert into log (username,Role,login,logout) values (?,?,?,\"WorkingOn\")";
+                    
+            st = i.con.prepareStatement(g);
+            st.setString(1, un);
+             st.setString(2, rs.getString("Role"));
+              java.util.Date d;
+                d = new java.util.Date();
+             SimpleDateFormat ft =  new SimpleDateFormat ("yyyy/MM/dd hh:mm:ss-a");
+             String h=ft.format(d);
+             st.setString(3,h);
+             st.executeUpdate();
+                 g="SELECT * from log where login=?";
+                 st = i.con.prepareStatement(g);
+                 st.setString(1,h);
+                 rs=st.executeQuery();
+                 rs.next();
+                 Cashier.ID=rs.getInt("ID");
                    java.awt.EventQueue.invokeLater(() -> {
-                       new Cashier().setVisible(true);
-           
+                       new Cashier().setVisible(true);        
                     });
                    
                  }
                  else if("InventoryControl".equals(rs.getString("Role")))
                  {
-                     System.out.println(rs.getString("Role"));
+                             g= "insert into log (username,Role,login,logout) values (?,?,?,\"WorkingOn\")";
+                    
+            st = i.con.prepareStatement(g);
+            st.setString(1, un);
+             st.setString(2, rs.getString("Role"));
+              java.util.Date d;
+                d = new java.util.Date();
+             SimpleDateFormat ft =  new SimpleDateFormat ("yyyy/MM/dd hh:mm:ss-a");
+             String h=ft.format(d);
+             st.setString(3,h);
+             st.executeUpdate();
+                 g="SELECT * from log where login=?";
+                 st = i.con.prepareStatement(g);
+                 st.setString(1,h);
+                 rs=st.executeQuery();
+                 rs.next();
+                 InventoryControl.ID=rs.getInt("ID");
                    java.awt.EventQueue.invokeLater(() -> {
                          try {
                              new InventoryControl().setVisible(true);
@@ -126,6 +174,7 @@ public class Login1 extends javax.swing.JFrame {
                     });
                    
                  }
+             
                  
                 this.setVisible(false);
              }

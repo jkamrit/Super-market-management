@@ -7,6 +7,7 @@ package jtable;
 
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,13 +36,14 @@ public class AdminFrame extends javax.swing.JFrame {
         jRadioButton3.setActionCommand("Admin");
          jRadioButton3.setSelected(true);
          jButton4.setEnabled(false);
-   
+          refressh();
          
 
  
 
  
     }
+
 
     /**
      *
@@ -93,6 +95,41 @@ public class AdminFrame extends javax.swing.JFrame {
         mo= (DefaultTableModel)jTable1.getModel();
         showctrl();
        
+    }
+    public void refressh()
+    {
+       
+        mo= (DefaultTableModel)jTable2.getModel();
+         mo.setRowCount(0);
+        
+       try {
+ 
+             PreparedStatement ps;
+        ResultSet rs;
+      
+        String s="SELECT * FROM log ORDER BY Id desc;";
+        ps=(PreparedStatement) poi.con.prepareStatement(s);
+         rs=ps.executeQuery();
+       
+      
+      Object[] r=new Object[4];
+         while(rs.next())
+         {
+             //String Us,String pa,String ro,String date,int a,int id
+              // "UserId", "UserName", "Password", "Age", "Role", "DateJoining"
+                     r[1]=rs.getString("Role");
+                     r[2]=rs.getString("login");
+           
+             r[3]=rs.getString("logout");
+             r[0]=rs.getString("username");
+             mo.addRow(r);
+
+         }
+         
+     
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
   
     /**
@@ -150,6 +187,7 @@ public class AdminFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jButton5 = new javax.swing.JButton();
 
         jDialog1.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog1.setTitle("New User INFO");
@@ -238,6 +276,14 @@ public class AdminFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AdminControl");
         setSize(new java.awt.Dimension(580, 470));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTabbedPane1.setPreferredSize(this.getSize());
@@ -507,12 +553,14 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Search and modify", jPanel2);
 
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "UserName", "Login", "Logout"
+                "UserName", "Role", "Login", "Logout"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -524,24 +572,16 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-        }
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(178, 178, 178)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 52, 575, 380));
+
+        jButton5.setText("Refresh");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, -1, -1));
 
         jTabbedPane1.addTab("Logger", jPanel3);
 
@@ -563,19 +603,29 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
         // TODO add your handling code here:
-        System.out.println("dd");
+        
         if(jTextField1.getText()==""||jTextField1.getText()=="UserName")jTextField1.setText("UserName");
     }//GEN-LAST:event_jTextField1FocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        System.out.println("he");
+
+        if(jTextField1.getText()=="")
+        {
+            JOptionPane.showMessageDialog(this, 
+               "Enter a name", "Error",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(String.valueOf(jPasswordField1.getPassword())=="")
+        {
+            JOptionPane.showMessageDialog(this, 
+               "Enter a Password", "Error",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String us,pa,r,da;
         int a;
         us=jTextField1.getText();
         pa=String.valueOf(jPasswordField1.getPassword());
         a=(Integer)jSpinner1.getValue();
-        System.out.println("he");
         r=buttonGroup1.getSelection().getActionCommand();
         PreparedStatement p;
         ResultSet rs;
@@ -583,10 +633,8 @@ public class AdminFrame extends javax.swing.JFrame {
         
         try {
             connect i=new connect();
-            System.out.println("he");
             p=  (PreparedStatement) connect.con.prepareStatement(g);
             p.setString(1, us);
-            System.out.println("he");
             rs=p.executeQuery();
             if(!rs.next())
             {
@@ -738,6 +786,39 @@ public class AdminFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        refressh();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        int i = JOptionPane.showConfirmDialog(this, "Do you want to delete the entire data?", "Delete",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+           // TODO add your handling code here:
+           PreparedStatement st;
+           String t="Update log set logout=? where ID=?";
+           connect i;
+        java.util.Date d = new java.util.Date();
+             SimpleDateFormat ft =  new SimpleDateFormat ("yyyy/MM/dd hh:mm:ss-a");
+             String h=ft.format(d);
+        try {
+            i = new connect();
+             st = (PreparedStatement) i.con.prepareStatement(t);
+                 st.setString(1,h);
+                 st.setInt(2,ID);
+                 st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+        
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -778,6 +859,8 @@ public class AdminFrame extends javax.swing.JFrame {
         });
     }
     connect poi=new connect();
+    
+    public static int ID=0;
  private DefaultTableModel mo=new DefaultTableModel();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -785,6 +868,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;

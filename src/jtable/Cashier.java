@@ -22,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import static jtable.AdminFrame.ID;
 
 /**
  *
@@ -36,7 +37,7 @@ public class Cashier extends javax.swing.JFrame {
         initComponents();
         address="C:\\Users\\RAMYAMUKESH\\Documents\\project\\filss\\";
         buttonGroup1.add(jRadioButton1);
-        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton2);
         buttonGroup1.add(jRadioButton3);
         jRadioButton1.setSelected(true);      
         jRadioButton1.setActionCommand("Cash");
@@ -44,16 +45,11 @@ public class Cashier extends javax.swing.JFrame {
         jRadioButton3.setActionCommand("Upi");
         ListSelectionModel cellSelectionModel = jTable1.getSelectionModel();
     cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
     cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
         String selectedData = null;
-
         int selectedRow = jTable1.getSelectedRow();
         int selectedColumn = jTable1.getSelectedColumn();
-        
-       
-//        System.out.println(String.valueOf( jTable1.getValueAt(selectedRow, selectedColumn) ));
       }
 
     });
@@ -74,7 +70,7 @@ public class Cashier extends javax.swing.JFrame {
          jLabel4.setText(String.valueOf(f));
          return;
         }
-       // System.out.println(String.valueOf(r)+String.valueOf(c));
+      
         try{ 
             p= Integer.valueOf((String) jTable1.getValueAt(r, c));
         }
@@ -131,6 +127,7 @@ public class Cashier extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
 
+        jFrame1.setTitle("MultipleProducts");
         jFrame1.setSize(new java.awt.Dimension(647, 260));
         jFrame1.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -162,8 +159,8 @@ public class Cashier extends javax.swing.JFrame {
         });
         jFrame1.getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 120, -1, -1));
 
+        jFrame2.setTitle("NewCustomer");
         jFrame2.setMinimumSize(new java.awt.Dimension(509, 299));
-        jFrame2.setPreferredSize(new java.awt.Dimension(509, 299));
         jFrame2.setSize(new java.awt.Dimension(509, 299));
         jFrame2.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -181,6 +178,12 @@ public class Cashier extends javax.swing.JFrame {
         jFrame2.getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(71, 94, -1, -1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cashier");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -406,7 +409,6 @@ public class Cashier extends javax.swing.JFrame {
         int i=jTable2.getSelectedRow();
         if(i==-1){
                     JOptionPane.showMessageDialog(jFrame1, "Select a row to proceed","Failed ", JOptionPane.ERROR_MESSAGE);
-             return;
                 }
         else{
             Object [] r1=new Object[5];
@@ -456,25 +458,23 @@ public class Cashier extends javax.swing.JFrame {
             {
                 int u=rs.getInt("count"),j;
                 t="Update people SET count= "+String.valueOf(++u)+" where ID = "+rs.getString("ID");
-                 System.out.println(t);
                 ps=(PreparedStatement) re.con.prepareStatement(t);
                 ps.executeUpdate();
                 Date d;
                 d = new Date();
              SimpleDateFormat ft = 
                             new SimpleDateFormat ("yyyy_MM_dd_hh_mm_ssa");
-             System.out.println("Current Date: " + ft.format(d));
             File df = new File(address+rs.getString("phonenumber")+"\\"+ft.format(d)+".txt");
             df.createNewFile();
             FileWriter f = new FileWriter(address+rs.getString("phonenumber")+"\\"+ft.format(d)+".txt");
-            f.write(String.format("%-10s %-10s %-10s %-10s %-10s","UniqueId","Name","price","quantity","Totalprice"));
+            f.write(String.format("%-10s %-15s %-10s %-10s %-10s","UniqueId","Name","price","quantity","Totalprice"));
              f.write("\n\n");
             for(i=0;i<jTable1.getRowCount();i++)
             {
                  t="UPDATE IC SET Quantity = Quantity-"+String.valueOf(jTable1.getValueAt(i, 3))+" WHERE UniqueId = "+ String.valueOf(jTable1.getValueAt(i, 0));
                
                 ps.executeUpdate(t);
-                f.write(String.format("%-10s %-10s %-10s %-10s %-10s",String.valueOf(jTable1.getValueAt(i, 0)),String.valueOf(jTable1.getValueAt(i, 1)),String.valueOf(jTable1.getValueAt(i, 2)),String.valueOf(jTable1.getValueAt(i, 3)),String.valueOf(jTable1.getValueAt(i, 4))));
+                f.write(String.format("%-10s %-15s %-10s %-10s %-10s",String.valueOf(jTable1.getValueAt(i, 0)),String.valueOf(jTable1.getValueAt(i, 1)),String.valueOf(jTable1.getValueAt(i, 2)),String.valueOf(jTable1.getValueAt(i, 3)),String.valueOf(jTable1.getValueAt(i, 4))));
                 f.write("\n");
             }
               f.close();
@@ -488,7 +488,6 @@ public class Cashier extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.print("jdfhsfj");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -523,9 +522,7 @@ public class Cashier extends javax.swing.JFrame {
                String t="Insert into people (phonenumber,Name,count) values (?,?,1)";
                 Date d;
                 d = new Date();
-             SimpleDateFormat ft = 
-                            new SimpleDateFormat ("yyyy_MM_dd_hh_mm_ssa");
-             System.out.println("Current Date: " + ft.format(d));
+             SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd_hh:mm:ssa");
               File file = new File(address+"\\"+jTextField3.getText());
             boolean bool = file.mkdirs();
             
@@ -539,7 +536,7 @@ public class Cashier extends javax.swing.JFrame {
             df.createNewFile();
             FileWriter f;
                 f = new FileWriter(address+jTextField3.getText()+"\\"+ft.format(d)+".txt");
-                 f.write(String.format("%-10s %-10s %-10s %-10s %-10s","UniqueId","Name","price","quantity","Totalprice"));
+                 f.write(String.format("%-10s %-15s %-10s %-10s %-10s","UniqueId","Name","price","quantity","Totalprice"));
              f.write("\n\n");
             
               
@@ -547,7 +544,7 @@ public class Cashier extends javax.swing.JFrame {
             {
               t="UPDATE IC SET Quantity = Quantity-"+String.valueOf(jTable1.getValueAt(i, 3))+" WHERE UniqueId = "+ String.valueOf(jTable1.getValueAt(i, 0));
                ps.executeUpdate(t);
-                f.write(String.format("%-10s %-10s %-10s %-10s %-10s",String.valueOf(jTable1.getValueAt(i, 0)),String.valueOf(jTable1.getValueAt(i, 1)),String.valueOf(jTable1.getValueAt(i, 2)),String.valueOf(jTable1.getValueAt(i, 3)),String.valueOf(jTable1.getValueAt(i, 4))));
+                f.write(String.format("%-10s %-15s %-10s %-10s %-10s",String.valueOf(jTable1.getValueAt(i, 0)),String.valueOf(jTable1.getValueAt(i, 1)),String.valueOf(jTable1.getValueAt(i, 2)),String.valueOf(jTable1.getValueAt(i, 3)),String.valueOf(jTable1.getValueAt(i, 4))));
                 f.write("\n");
             }
              f.close();
@@ -556,6 +553,7 @@ public class Cashier extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 model.setRowCount(0);
                       JOptionPane.showMessageDialog(this, "Data stored successfully","Success ", JOptionPane.INFORMATION_MESSAGE);
+                     
             } catch (IOException ex) {
                 Logger.getLogger(Cashier.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -570,6 +568,26 @@ public class Cashier extends javax.swing.JFrame {
         // TODO add your handling code here:
      
     }//GEN-LAST:event_jTextField3FocusLost
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        PreparedStatement st;
+           String t="Update log set logout=? where ID=?";
+           connect i;
+        java.util.Date d = new java.util.Date();
+             SimpleDateFormat ft =  new SimpleDateFormat ("yyyy/MM/dd hh:mm:ss-a");
+             String h=ft.format(d);
+        try {
+            i = new connect();
+             st = (PreparedStatement) i.con.prepareStatement(t);
+                 st.setString(1,h);
+                 st.setInt(2,ID);
+                 st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+    }//GEN-LAST:event_formWindowClosing
       
     
    
@@ -606,6 +624,7 @@ public class Cashier extends javax.swing.JFrame {
         });
     }
     private String address="";
+    public static int ID=0;
 private DefaultTableModel mo=new DefaultTableModel();
 private DefaultTableModel mo1=new DefaultTableModel();
     // Variables declaration - do not modify//GEN-BEGIN:variables

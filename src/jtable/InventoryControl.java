@@ -9,11 +9,13 @@ package jtable;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static jtable.AdminFrame.ID;
 
 /**
  *
@@ -231,6 +233,12 @@ public class InventoryControl extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("InventoryControl");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -448,6 +456,7 @@ public class InventoryControl extends javax.swing.JFrame {
              r[5]=rs.getInt("Quantity");
              mo.addRow(r);
          }while(rs.next());
+         
             jRadioButton2.setSelected(true);
              jRadioButton2.setEnabled(true);
              jSpinner2.setEnabled(true);
@@ -481,11 +490,6 @@ public class InventoryControl extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-        refresh(1);
-    }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
@@ -587,7 +591,7 @@ public class InventoryControl extends javax.swing.JFrame {
         if(i==-1){JOptionPane.showMessageDialog(this, "Select the a product from the table","Failed ", JOptionPane.ERROR_MESSAGE);
         return;
         }
-        if(((String)jComboBox1.getSelectedItem()).equals("Price"))
+        if(jComboBox1.getSelectedItem().equals("Price"))
         {
             try
             {t=Float.valueOf(jTextField4.getText());}
@@ -596,7 +600,7 @@ public class InventoryControl extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Enter valid price in th box","Failed ", JOptionPane.ERROR_MESSAGE);return;
             }
         }
-        if(((String)jComboBox1.getSelectedItem()).equals("Name"))
+        if(jComboBox1.getSelectedItem().equals("Name"))
         {
             try
             {a=jTextField4.getText();}
@@ -605,7 +609,7 @@ public class InventoryControl extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Enter valid name in th box","Failed ", JOptionPane.ERROR_MESSAGE);return;
             }
         }
-        if(((String)jComboBox1.getSelectedItem()).equals("MarketPrice"))
+        if(jComboBox1.getSelectedItem().equals("MarketPrice"))
         {
             try
             {t=Float.valueOf(jTextField4.getText());}
@@ -613,7 +617,7 @@ public class InventoryControl extends javax.swing.JFrame {
             {
                 JOptionPane.showMessageDialog(this, "Enter valid MarketPrice in th box","Failed ", JOptionPane.ERROR_MESSAGE);return ;
             }}
-            if(((String)jComboBox1.getSelectedItem()).equals("Quantity"))
+            if(jComboBox1.getSelectedItem().equals("Quantity"))
         {
             try
             {t1=Integer.valueOf(jTextField4.getText());}
@@ -633,7 +637,7 @@ public class InventoryControl extends javax.swing.JFrame {
            if(i!=0)return;
            i= jTable1.getSelectedRow();
         PreparedStatement ps;
-        String lp="Update IC set "+(String)jComboBox1.getSelectedItem()+"= ? where UniqueId = ?";
+        String lp="Update IC set "+jComboBox1.getSelectedItem()+"= ? where UniqueId = ?";
         try {
             ps=(PreparedStatement) connect.con.prepareStatement(lp);
             ps.setInt(2, (int) jTable1.getValueAt(i, 1));
@@ -679,6 +683,31 @@ public class InventoryControl extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        PreparedStatement st;
+           String t="Update log set logout=? where ID=?";
+           connect i;
+        java.util.Date d = new java.util.Date();
+             SimpleDateFormat ft =  new SimpleDateFormat ("yyyy/MM/dd hh:mm:ss-a");
+             String h=ft.format(d);
+        try {
+            i = new connect();
+             st = (PreparedStatement) i.con.prepareStatement(t);
+                 st.setString(1,h);
+                 st.setInt(2,ID);
+                 st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+        refresh(1);
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -718,7 +747,7 @@ public class InventoryControl extends javax.swing.JFrame {
             }
         });
     }
-
+public static int ID=0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
